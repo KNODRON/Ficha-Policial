@@ -12,12 +12,10 @@
   <div class="app-container">
     <header class="app-header">
       <h1>FICHA POLICIAL OS9</h1>
-      <span class="subtitle">Departamento Investigación de Organizaciones Criminales O.S.9</span>
+      <span class="subtitle">Sistema interno - Formato estilo &quot;MARÍA MACARENA&quot;</span>
     </header>
 
-    <!-- =========================
-         BLOQUE: IDENTIFICACIÓN DEL CASO
-         ========================== -->
+    <!-- IDENTIFICACIÓN DEL CASO -->
     <section class="section-card">
       <h2>Identificación del caso</h2>
       <div class="grid-3">
@@ -27,18 +25,18 @@
         </div>
         <div class="form-group">
           <label for="caso">Caso / Causa</label>
-          <input type="text" id="caso" placeholder="INCENDIO CON PELIGRO PARA LAS PERSONAS">
+          <input type="text" id="caso" placeholder="COLOCACIÓN DE BOMBA O ARTEFACTO EXPLOSIVO">
         </div>
         <div class="form-group">
           <label for="ruc">Folio o RUC</label>
-          <input type="text" id="ruc" placeholder="2500872101-K">
+          <input type="text" id="ruc" placeholder="2500XXXXXX-X">
         </div>
       </div>
 
       <div class="grid-2">
         <div class="form-group">
           <label for="personalRequiere">Personal que requiere</label>
-          <input type="text" id="personalRequiere" placeholder="TTE. POULETTE REYES BARRA">
+          <input type="text" id="personalRequiere" placeholder="TTE. EDITH CEPEDA PINTO">
         </div>
         <div class="form-group">
           <label for="confecciona">Confecciona</label>
@@ -47,19 +45,22 @@
       </div>
     </section>
 
-    <!-- =========================
-         BLOQUE: IDENTIDAD
-         ========================== -->
+    <!-- IDENTIDAD -->
     <section class="section-card">
       <div class="section-header-row">
         <h2>Identidad</h2>
-        <div class="photo-wrapper">
-          <span class="photo-label">Fotografía identificado</span>
-          <!-- Foto 8cm x 6cm (alto x ancho) aprox -->
-          <div class="photo-box main-photo" data-role="main-photo" contenteditable="true">
-            <span class="photo-hint">Clic aquí y pegar recorte (Ctrl+V)</span>
-          </div>
+      </div>
+
+      <div class="form-group">
+        <label for="nombreCompleto">Nombre completo</label>
+        <input type="text" id="nombreCompleto" placeholder="MARÍA MACARENA VERÓNICA VALDÉS DÍAZ">
+      </div>
+
+      <div class="photo-main-container">
+        <div class="photo-box main-photo" data-role="main-photo" contenteditable="true">
+          <span class="photo-hint">Clic aquí y pegar recorte de foto (Ctrl+V)</span>
         </div>
+        <span class="photo-label">Fotografía identificada (8 x 6 cm)</span>
       </div>
 
       <div class="grid-3">
@@ -69,18 +70,18 @@
         </div>
         <div class="form-group">
           <label for="nacionalidad">Nacionalidad</label>
-          <input type="text" id="nacionalidad">
+          <input type="text" id="nacionalidad" placeholder="CHILENA">
         </div>
         <div class="form-group">
           <label for="edad">Edad</label>
-          <input type="number" id="edad" min="0">
+          <input type="text" id="edad" placeholder="54 AÑOS">
         </div>
       </div>
 
       <div class="grid-3">
         <div class="form-group">
           <label for="run">RUN</label>
-          <input type="text" id="run">
+          <input type="text" id="run" placeholder="8547212-7">
         </div>
         <div class="form-group">
           <label for="fechaNac">Fecha de nacimiento</label>
@@ -88,76 +89,71 @@
         </div>
         <div class="form-group">
           <label for="estadoCivil">Estado civil</label>
-          <input type="text" id="estadoCivil">
+          <input type="text" id="estadoCivil" placeholder="DIVORCIADA">
         </div>
       </div>
 
-      <div class="grid-2">
-        <div class="form-group">
-          <label for="domicilio">Domicilio</label>
-          <input type="text" id="domicilio">
-        </div>
-        <div class="form-group">
-          <label for="domicilioBud">Domicilio BUD</label>
-          <input type="text" id="domicilioBud">
-        </div>
+      <div class="form-group">
+        <label for="domicilio">Domicilio</label>
+        <input type="text" id="domicilio" placeholder="ESCRIVÁ DE BALAGUER NRO. 9211, DEPTO. 806, VITACURA">
+      </div>
+
+      <div class="form-group">
+        <label for="domicilioBud">Domicilio BUD</label>
+        <input type="text" id="domicilioBud" placeholder="NO REGISTRA">
+      </div>
+
+      <div class="form-group">
+        <label for="otrosDomicilios">Otros domicilios</label>
+        <input type="text" id="otrosDomicilios" placeholder="AVDA. DEL MAR NRO. 2, DEPTO. 29, SANTO DOMINGO">
       </div>
 
       <div class="grid-3">
         <div class="form-group">
           <label for="profesion">Profesión</label>
-          <input type="text" id="profesion">
+          <input type="text" id="profesion" placeholder="PUBLICISTA">
         </div>
         <div class="form-group">
           <label for="telefono">Teléfono</label>
-          <input type="text" id="telefono">
+          <input type="text" id="telefono" placeholder="+56940463439">
         </div>
         <div class="form-group">
           <label for="licencia">Licencia</label>
-          <input type="text" id="licencia">
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <div class="form-group">
-          <label for="penales">Penales</label>
-          <input type="text" id="penales">
-        </div>
-        <div class="form-group">
-          <label for="causasPendientes">Causas pendientes</label>
-          <input type="text" id="causasPendientes">
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <div class="form-group">
-          <label for="reincidencia">Reincidencia</label>
-          <input type="text" id="reincidencia">
-        </div>
-        <div class="form-group">
-          <label for="companerosDelito">Compañeros de delito</label>
-          <input type="text" id="companerosDelito">
+          <input type="text" id="licencia" placeholder="CLASE B, COMUNA DE VITACURA">
         </div>
       </div>
 
       <div class="form-group">
+        <label for="penales">Penales</label>
+        <textarea id="penales" rows="3" placeholder="» AÑO 2001, MANEJO EN ESTADO DE EBRIEDAD..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="causasPendientes">Causas pendientes</label>
+        <textarea id="causasPendientes" rows="2" placeholder="NO REGISTRA"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="reincidencia">Reincidencia</label>
+        <textarea id="reincidencia" rows="3" placeholder="NO REGISTRA"></textarea>
+      </div>
+
+      <div class="form-group">
         <label for="vehiculos">Vehículos</label>
-        <input type="text" id="vehiculos">
+        <textarea id="vehiculos" rows="3" placeholder="» PPU DYBS.62, STATIONWAGON MARCA MAZDA..."></textarea>
       </div>
     </section>
 
-    <!-- =========================
-         BLOQUE: GRUPO FAMILIAR
-         ========================== -->
+    <!-- GRUPO FAMILIAR -->
     <section class="section-card">
       <div class="section-header-row">
         <h2>Grupo familiar</h2>
         <span class="section-helper">
-          Agrega PADRE, MADRE, HIJOS, HERMANOS, etc. Solo se exportan los que tengan datos.
+          Agrega CONYUGE, HIJOS, PADRES, etc. Solo se exportan familiares con datos.
         </span>
       </div>
 
-      <!-- Formulario base para crear un nuevo familiar -->
+      <!-- Formulario para nuevo familiar -->
       <div class="familiar-creator">
         <div class="grid-3">
           <div class="form-group">
@@ -168,7 +164,7 @@
               <option>MADRE</option>
               <option>PADRASTRO</option>
               <option>MADRASTRA</option>
-              <option>CÓNYUGE</option>
+              <option>CONYUGE</option>
               <option>CONVIVIENTE</option>
               <option>HERMANO</option>
               <option>HERMANA</option>
@@ -184,53 +180,58 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="edadNuevo">Edad</label>
-            <input type="number" id="edadNuevo" min="0">
+            <label for="nombreFamNuevo">Nombre completo</label>
+            <input type="text" id="nombreFamNuevo" placeholder="JOAQUÍN FERNÁNDEZ RODRÍGUEZ">
           </div>
           <div class="form-group">
-            <label for="runNuevo">RUN</label>
-            <input type="text" id="runNuevo">
+            <label for="edadNuevo">Edad</label>
+            <input type="text" id="edadNuevo" placeholder="49 AÑOS">
           </div>
         </div>
 
         <div class="grid-3">
+          <div class="form-group">
+            <label for="runNuevo">RUN</label>
+            <input type="text" id="runNuevo" placeholder="13038229-0">
+          </div>
           <div class="form-group">
             <label for="fechaNacNuevo">Fecha de nacimiento</label>
             <input type="date" id="fechaNacNuevo">
           </div>
           <div class="form-group">
             <label for="estadoCivilNuevo">Estado civil</label>
-            <input type="text" id="estadoCivilNuevo">
-          </div>
-          <div class="form-group">
-            <label for="domicilioNuevo">Domicilio</label>
-            <input type="text" id="domicilioNuevo">
+            <input type="text" id="estadoCivilNuevo" placeholder="DIVORCIADO">
           </div>
         </div>
 
-        <div class="grid-3">
-          <div class="form-group">
-            <label for="penalesNuevo">Penales</label>
-            <input type="text" id="penalesNuevo">
-          </div>
-          <div class="form-group">
-            <label for="causasPendientesNuevo">Causas pendientes</label>
-            <input type="text" id="causasPendientesNuevo">
-          </div>
-          <div class="form-group">
-            <label for="reincidenciaNuevo">Reincidencia</label>
-            <input type="text" id="reincidenciaNuevo">
-          </div>
+        <div class="form-group">
+          <label for="domicilioNuevo">Domicilio</label>
+          <input type="text" id="domicilioNuevo" placeholder="APOQUINDO NRO. 3795, DEPTO. 64, LAS CONDES">
         </div>
 
-        <div class="grid-2">
+        <div class="form-group">
+          <label for="penalesNuevo">Penales</label>
+          <textarea id="penalesNuevo" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="causasPendientesNuevo">Causas pendientes</label>
+          <textarea id="causasPendientesNuevo" rows="2"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="reincidenciaNuevo">Reincidencia</label>
+          <textarea id="reincidenciaNuevo" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="vehiculosNuevo">Vehículos</label>
+          <textarea id="vehiculosNuevo" rows="2"></textarea>
+        </div>
+
+        <div class="familiar-photo-row">
           <div class="form-group">
-            <label for="vehiculosNuevo">Vehículos</label>
-            <input type="text" id="vehiculosNuevo">
-          </div>
-          <div class="form-group familiar-photo-group">
-            <span class="label-inline">Fotografía familiar</span>
-            <!-- Foto 4cm x 3cm -->
+            <span class="label-inline">Fotografía familiar (4 x 3 cm)</span>
             <div class="photo-box familiar-photo" data-role="familiar-photo" contenteditable="true">
               <span class="photo-hint small">Pegar recorte aquí (Ctrl+V)</span>
             </div>
@@ -244,15 +245,11 @@
         </div>
       </div>
 
-      <!-- Contenedor donde se van agregando los familiares -->
-      <div id="familiaresContainer" class="familiares-list">
-        <!-- Aquí se insertan las tarjetas de familiares -->
-      </div>
+      <!-- Aquí se agregan las tarjetas de familiares -->
+      <div id="familiaresContainer" class="familiares-list"></div>
     </section>
 
-    <!-- =========================
-         ACCIONES GENERALES
-         ========================== -->
+    <!-- EXPORTAR -->
     <section class="section-card actions-card">
       <h2>Exportar ficha</h2>
       <div class="actions-row">
@@ -260,12 +257,12 @@
         <button type="button" id="btnExportWord" class="btn secondary">Exportar a Word (.doc)</button>
       </div>
       <p class="hint">
-        Los bloques o campos que queden completamente en blanco no aparecerán en la exportación.
+        El PDF y Word siguen el estilo de la ficha &quot;MARÍA MACARENA&quot;. Los bloques sin datos no se muestran.
       </p>
     </section>
   </div>
 
-  <!-- Área oculta donde se construye la ficha para exportar -->
+  <!-- Área oculta para construir la ficha con el formato institucional -->
   <div id="exportArea" class="export-area" aria-hidden="true"></div>
 
   <script src="app.js"></script>
