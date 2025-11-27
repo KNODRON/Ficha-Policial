@@ -1,32 +1,28 @@
-// ========================
-// Utilidades básicas
-// ========================
-
+// =====================
+// Utilidades
+// =====================
 function getValue(id) {
   const el = document.getElementById(id);
-  return el ? el.value.trim() : "";
+  if (!el) return "";
+  return (el.value || "").trim();
 }
 
-function createElement(tag, className, text) {
+function createEl(tag, className, text) {
   const el = document.createElement(tag);
   if (className) el.className = className;
-  if (text) el.textContent = text;
+  if (text !== undefined) el.textContent = text;
   return el;
 }
 
-// ========================
+// =====================
 // Pegado de imágenes en recuadros
-// ========================
-
+// =====================
 function initPhotoPasteHandlers(root = document) {
   const boxes = root.querySelectorAll(".photo-box");
 
   boxes.forEach((box) => {
-    // Evitar que Enter genere saltos raros
     box.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-      }
+      if (e.key === "Enter") e.preventDefault();
     });
 
     box.addEventListener("paste", (e) => {
@@ -55,13 +51,19 @@ function initPhotoPasteHandlers(root = document) {
   });
 }
 
-// ========================
-// Módulo de familiares
-// ========================
-
+// =====================
+// Familiares
+// =====================
 function collectTemporalFamiliarData() {
+  const familiarPhotoBox = document.querySelector(".familiar-photo");
+  const foto =
+    familiarPhotoBox && familiarPhotoBox.dataset.image
+      ? familiarPhotoBox.dataset.image
+      : "";
+
   return {
     relacion: getValue("relacionNuevo"),
+    nombre: getValue("nombreFamNuevo"),
     edad: getValue("edadNuevo"),
     run: getValue("runNuevo"),
     fechaNac: getValue("fechaNacNuevo"),
@@ -71,14 +73,14 @@ function collectTemporalFamiliarData() {
     causasPendientes: getValue("causasPendientesNuevo"),
     reincidencia: getValue("reincidenciaNuevo"),
     vehiculos: getValue("vehiculosNuevo"),
-    foto: (document.querySelector(".familiar-photo[data-image]") || {}).dataset
-      ?.image,
+    foto
   };
 }
 
 function clearTemporalFamiliarForm() {
-  const ids = [
+  [
     "relacionNuevo",
+    "nombreFamNuevo",
     "edadNuevo",
     "runNuevo",
     "fechaNacNuevo",
@@ -87,10 +89,10 @@ function clearTemporalFamiliarForm() {
     "penalesNuevo",
     "causasPendientesNuevo",
     "reincidenciaNuevo",
-    "vehiculosNuevo",
-  ];
-  ids.forEach((id) => {
+    "vehiculosNuevo"
+  ].forEach((id) => {
     const el = document.getElementById(id);
+    if (!el) return;
     if (el.tagName.toLowerCase() === "select") {
       el.value = "";
     } else {
@@ -110,55 +112,51 @@ function clearTemporalFamiliarForm() {
 
 function addFamiliarCard(data) {
   const container = document.getElementById("familiaresContainer");
-  const card = createElement("div", "familiar-card");
+  const card = createEl("div", "familiar-card");
 
-  const header = createElement("div", "familiar-card-header");
-  const title = createElement(
-    "span",
-    "",
-    data.relacion || "(SIN RELACIÓN DEFINIDA)"
-  );
-  const btnDelete = createElement("button", "btn btn-small secondary", "Eliminar");
-  btnDelete.addEventListener("click", () => {
+  const header = createEl("div", "familiar-card-header");
+  const title = createEl("span", "", data.relacion || "(SIN RELACIÓN)");
+  const btnDel = createEl("button", "btn btn-small secondary", "Eliminar");
+  btnDel.addEventListener("click", () => {
     container.removeChild(card);
   });
   header.appendChild(title);
-  header.appendChild(btnDelete);
+  header.appendChild(btnDel);
 
-  const fields = createElement("div", "familiar-fields");
+  const body = createEl("div");
 
-  // Helper para crear filas editables dentro de la tarjeta
-  function addField(labelText, value, keyName) {
-    const fg = createElement("div", "form-group");
-    const lab = createElement("label", "", labelText);
-    const input = createElement("input");
-    input.type = "text";
-    input.value = value || "";
-    input.dataset.field = keyName;
+  function fieldLine(label, key, value) {
+    const fg = createEl("div", "form-group");
+    const lab = createEl("label", "", label);
+    const inp = createEl("textarea");
+    if (["edad"].includes(key)) {
+      // puede ser simple texto como "49 AÑOS"
+    }
+    inp.rows = 1;
+    inp.value = value || "";
+    inp.dataset.field = key;
     fg.appendChild(lab);
-    fg.appendChild(input);
-    fields.appendChild(fg);
+    fg.appendChild(inp);
+    body.appendChild(fg);
   }
 
-  addField("Edad", data.edad, "edad");
-  addField("RUN", data.run, "run");
-  addField("Fecha de nacimiento", data.fechaNac, "fechaNac");
-  addField("Estado civil", data.estadoCivil, "estadoCivil");
-  addField("Domicilio", data.domicilio, "domicilio");
-  addField("Penales", data.penales, "penales");
-  addField("Causas pendientes", data.causasPendientes, "causasPendientes");
-  addField("Reincidencia", data.reincidencia, "reincidencia");
-  addField("Vehículos", data.vehiculos, "vehiculos");
+  fieldLine("Nombre completo", "nombre", data.nombre);
+  fieldLine("Edad", "edad", data.edad);
+  fieldLine("RUN", "run", data.run);
+  fieldLine("Fecha de nacimiento", "fechaNac", data.fechaNac);
+  fieldLine("Estado civil", "estadoCivil", data.estadoCivil);
+  fieldLine("Domicilio", "domicilio", data.domicilio);
+  fieldLine("Penales", "penales", data.penales);
+  fieldLine("Causas pendientes", "causasPendientes", data.causasPendientes);
+  fieldLine("Reincidencia", "reincidencia", data.reincidencia);
+  fieldLine("Vehículos", "vehiculos", data.vehiculos);
 
-  const bottomRow = createElement("div", "familiar-bottom-row");
-  const dummy = createElement("div"); // espacio
-  const photoGroup = createElement("div", "familiar-photo-group");
-  const labPhoto = createElement("span", "label-inline", "Fotografía familiar");
-  const photoBox = createElement("div", "photo-box familiar-photo");
+  const photoFg = createEl("div", "form-group");
+  const labPhoto = createEl("label", "", "Fotografía familiar");
+  const photoBox = createEl("div", "photo-box familiar-photo");
   photoBox.contentEditable = "true";
   photoBox.setAttribute("data-role", "familiar-photo");
-
-  const hint = createElement(
+  const hint = createEl(
     "span",
     "photo-hint small",
     "Pegar recorte aquí (Ctrl+V)"
@@ -173,336 +171,207 @@ function addFamiliarCard(data) {
     photoBox.setAttribute("data-image", data.foto);
   }
 
-  photoGroup.appendChild(labPhoto);
-  photoGroup.appendChild(photoBox);
-
-  bottomRow.appendChild(dummy);
-  bottomRow.appendChild(photoGroup);
+  photoFg.appendChild(labPhoto);
+  photoFg.appendChild(photoBox);
 
   card.appendChild(header);
-  card.appendChild(fields);
-  card.appendChild(bottomRow);
+  card.appendChild(body);
+  card.appendChild(photoFg);
 
   container.appendChild(card);
 
-  // Activar pegado de foto para esta tarjeta
+  // Activar pegado de imagen en esta tarjeta
   initPhotoPasteHandlers(card);
 }
 
-// Recoger todos los familiares desde las tarjetas
 function collectFamiliaresFromDOM() {
   const container = document.getElementById("familiaresContainer");
   const cards = Array.from(container.querySelectorAll(".familiar-card"));
   return cards.map((card) => {
     const relacion = card.querySelector(".familiar-card-header span").textContent.trim();
-    const obj = { relacion };
+    const data = { relacion };
 
-    const inputs = card.querySelectorAll(".familiar-fields input");
-    inputs.forEach((inp) => {
-      const key = inp.dataset.field;
-      obj[key] = inp.value.trim();
+    const textareas = card.querySelectorAll("textarea");
+    textareas.forEach((ta) => {
+      const key = ta.dataset.field;
+      data[key] = (ta.value || "").trim();
     });
 
     const photoBox = card.querySelector(".familiar-photo");
     if (photoBox && photoBox.dataset.image) {
-      obj.foto = photoBox.dataset.image;
+      data.foto = photoBox.dataset.image;
     } else {
-      obj.foto = "";
+      data.foto = "";
     }
 
-    return obj;
+    return data;
   });
 }
 
-// ========================
-// Construcción de ficha para exportar
-// ========================
+// =====================
+// Construcción de la ficha estilo &quot;MARÍA MACARENA&quot;
+// =====================
+function addLabelValue(exportParent, label, value) {
+  if (!value) return;
+  const lab = createEl("div", "export-label-line", label.toUpperCase());
+  const val = createEl("div", "export-value-line", value);
+  exportParent.appendChild(lab);
+  exportParent.appendChild(val);
+}
 
 function buildExportDOM() {
-  const exportArea = document.getElementById("exportArea");
-  exportArea.innerHTML = "";
+  const area = document.getElementById("exportArea");
+  area.innerHTML = "";
 
-  // Cabecera
-  const title = createElement("div", "export-page-title", "FICHA DE ANTECEDENTES");
-  const sub = createElement(
-    "div",
-    "export-subtitle",
-    "Departamento Investigación de Organizaciones Criminales O.S.9"
+  // TÍTULO
+  area.appendChild(createEl("div", "export-title", "FICHA DE ANTECEDENTES"));
+  area.appendChild(
+    createEl(
+      "div",
+      "export-subtitle",
+      "Departamento Investigación de Organizaciones Criminales O.S.9"
+    )
   );
-  exportArea.appendChild(title);
-  exportArea.appendChild(sub);
 
-  // ---------- Identificación del caso ----------
-  const identificacionTitle = createElement(
-    "div",
-    "export-section-title",
-    "Identificación del caso"
-  );
-  exportArea.appendChild(identificacionTitle);
+  // IDENTIFICACIÓN DEL CASO
+  const secId = createEl("div", "export-section");
+  const secIdTitle = createEl("div", "export-section-title", "IDENTIFICACIÓN DEL CASO");
+  secId.appendChild(secIdTitle);
 
-  const tablaId = createElement("table", "export-table");
-  const tbodyId = document.createElement("tbody");
+  addLabelValue(secId, "Fecha", getValue("fecha"));
+  addLabelValue(secId, "Caso / Causa", getValue("caso"));
+  addLabelValue(secId, "Personal que requiere", getValue("personalRequiere"));
+  addLabelValue(secId, "Confecciona", getValue("confecciona"));
+  addLabelValue(secId, "Folio o RUC", getValue("ruc"));
 
-  // Fila 1: Fecha - Caso/Causa - Folio/RUC
-  const tr1 = document.createElement("tr");
-  const fecha = getValue("fecha");
-  const caso = getValue("caso");
-  const ruc = getValue("ruc");
+  area.appendChild(secId);
 
-  if (fecha || caso || ruc) {
-    const td1 = document.createElement("td");
-    const td2 = document.createElement("td");
-    const td3 = document.createElement("td");
+  // IDENTIDAD
+  const secIdent = createEl("div", "export-section");
+  const secIdentTitle = createEl("div", "export-section-title", "IDENTIDAD");
+  secIdent.appendChild(secIdentTitle);
 
-    if (fecha) {
-      td1.innerHTML = `<span class="export-label">Fecha:</span> ${fecha}`;
-    }
-    if (caso) {
-      td2.innerHTML = `<span class="export-label">Caso / Causa:</span> ${caso}`;
-    }
-    if (ruc) {
-      td3.innerHTML = `<span class="export-label">Folio o RUC:</span> ${ruc}`;
-    }
-
-    tr1.appendChild(td1);
-    tr1.appendChild(td2);
-    tr1.appendChild(td3);
-    tbodyId.appendChild(tr1);
+  const nombreCompleto = getValue("nombreCompleto");
+  if (nombreCompleto) {
+    secIdent.appendChild(
+      createEl("div", "export-name-main", nombreCompleto.toUpperCase())
+    );
   }
 
-  // Fila 2: Personal que requiere - Confecciona
-  const personal = getValue("personalRequiere");
-  const confecciona = getValue("confecciona");
-
-  if (personal || confecciona) {
-    const tr2 = document.createElement("tr");
-    const td1 = document.createElement("td");
-    const td2 = document.createElement("td");
-    const td3 = document.createElement("td");
-
-    if (personal) {
-      td1.colSpan = 2;
-      td1.innerHTML = `<span class="export-label">Personal que requiere:</span> ${personal}`;
-    }
-    if (confecciona) {
-      td2.colSpan = personal ? 1 : 3;
-      td2.innerHTML = `<span class="export-label">Confecciona:</span> ${confecciona}`;
-    }
-
-    tr2.appendChild(td1);
-    tr2.appendChild(td2);
-    tr2.appendChild(td3);
-    tbodyId.appendChild(tr2);
-  }
-
-  tablaId.appendChild(tbodyId);
-  exportArea.appendChild(tablaId);
-
-  // ---------- Identidad ----------
-  const identidadTitle = createElement("div", "export-section-title", "Identidad");
-  exportArea.appendChild(identidadTitle);
-
-  const tablaIdentidad = createElement("table", "export-table");
-  const tbodyIdent = document.createElement("tbody");
-
-  // Foto principal
+  // Foto principal centrada
   const mainPhotoBox = document.querySelector(".main-photo");
-  const mainPhotoData = mainPhotoBox && mainPhotoBox.dataset.image;
-
-  // Primera fila: Alias, Nacionalidad, Edad + Foto
-  const trId1 = document.createElement("tr");
-  const tdId1 = document.createElement("td");
-  const tdId2 = document.createElement("td");
-  const tdId3 = document.createElement("td");
-  const tdIdPhoto = document.createElement("td");
-  tdIdPhoto.rowSpan = 4; // ocupa varias filas
-
-  const alias = getValue("alias");
-  const nacionalidad = getValue("nacionalidad");
-  const edad = getValue("edad");
-
-  if (alias) {
-    tdId1.innerHTML = `<span class="export-label">Alias:</span> ${alias}`;
-  }
-  if (nacionalidad) {
-    tdId2.innerHTML = `<span class="export-label">Nacionalidad:</span> ${nacionalidad}`;
-  }
-  if (edad) {
-    tdId3.innerHTML = `<span class="export-label">Edad:</span> ${edad}`;
-  }
-
+  const mainPhotoData =
+    mainPhotoBox && mainPhotoBox.dataset.image ? mainPhotoBox.dataset.image : "";
   if (mainPhotoData) {
-    const img = document.createElement("img");
+    const img = createEl("img", "export-photo-main");
     img.src = mainPhotoData;
-    img.className = "export-photo";
     img.style.width = "6cm";
     img.style.height = "8cm";
-    tdIdPhoto.appendChild(img);
+    secIdent.appendChild(img);
   }
 
-  // Solo añadimos fila si hay algún dato o foto
-  if (alias || nacionalidad || edad || mainPhotoData) {
-    trId1.appendChild(tdId1);
-    trId1.appendChild(tdId2);
-    trId1.appendChild(tdId3);
-    if (mainPhotoData) {
-      trId1.appendChild(tdIdPhoto);
-    }
-    tbodyIdent.appendChild(trId1);
-  }
+  addLabelValue(secIdent, "Alias", getValue("alias"));
+  addLabelValue(secIdent, "Nacionalidad", getValue("nacionalidad"));
+  addLabelValue(secIdent, "Edad", getValue("edad"));
+  addLabelValue(secIdent, "RUN", getValue("run"));
+  addLabelValue(
+    secIdent,
+    "Fecha de nacimiento",
+    getValue("fechaNac")
+  );
+  addLabelValue(secIdent, "Estado civil", getValue("estadoCivil"));
+  addLabelValue(secIdent, "Domicilio", getValue("domicilio"));
+  addLabelValue(secIdent, "Domicilio BUD", getValue("domicilioBud"));
+  addLabelValue(secIdent, "Otros domicilios", getValue("otrosDomicilios"));
+  addLabelValue(secIdent, "Profesión", getValue("profesion"));
+  addLabelValue(secIdent, "Teléfono", getValue("telefono"));
+  addLabelValue(secIdent, "Penales", getValue("penales"));
+  addLabelValue(secIdent, "Causas pendientes", getValue("causasPendientes"));
+  addLabelValue(secIdent, "Reincidencia", getValue("reincidencia"));
+  addLabelValue(secIdent, "Vehículos", getValue("vehiculos"));
+  addLabelValue(secIdent, "Licencia", getValue("licencia"));
 
-  // Resto de campos de identidad
-  function addRowIfAny(bloque) {
-    const anyValue = bloque.some((item) => !!item.value);
-    if (!anyValue) return;
-    const tr = document.createElement("tr");
-    bloque.forEach((item) => {
-      const td = document.createElement("td");
-      if (item.value) {
-        td.innerHTML = `<span class="export-label">${item.label}:</span> ${item.value}`;
-      }
-      tr.appendChild(td);
-    });
-    // Si hay foto en primera fila, no añadimos más celdas de foto
-    tbodyIdent.appendChild(tr);
-  }
+  area.appendChild(secIdent);
 
-  addRowIfAny([
-    { label: "RUN", value: getValue("run") },
-    { label: "Fecha de nacimiento", value: getValue("fechaNac") },
-    { label: "Estado civil", value: getValue("estadoCivil") },
-  ]);
-
-  addRowIfAny([
-    { label: "Domicilio", value: getValue("domicilio") },
-    { label: "Domicilio BUD", value: getValue("domicilioBud") },
-    { label: "Profesión", value: getValue("profesion") },
-  ]);
-
-  addRowIfAny([
-    { label: "Teléfono", value: getValue("telefono") },
-    { label: "Licencia", value: getValue("licencia") },
-    { label: "Penales", value: getValue("penales") },
-  ]);
-
-  addRowIfAny([
-    { label: "Causas pendientes", value: getValue("causasPendientes") },
-    { label: "Reincidencia", value: getValue("reincidencia") },
-    { label: "Compañeros de delito", value: getValue("companerosDelito") },
-  ]);
-
-  addRowIfAny([
-    { label: "Vehículos", value: getValue("vehiculos") },
-  ]);
-
-  if (tbodyIdent.children.length > 0) {
-    tablaIdentidad.appendChild(tbodyIdent);
-    exportArea.appendChild(tablaIdentidad);
-  }
-
-  // ---------- Grupo familiar ----------
+  // GRUPO FAMILIAR
   const familiares = collectFamiliaresFromDOM();
-  const familiaresConDatos = familiares.filter((f) => {
-    // Si todos los campos están vacíos, no se incluye
-    const keys = [
-      "edad",
-      "run",
-      "fechaNac",
-      "estadoCivil",
-      "domicilio",
-      "penales",
-      "causasPendientes",
-      "reincidencia",
-      "vehiculos",
-      "foto",
-    ];
-    return keys.some((k) => (f[k] || "").trim() !== "");
+  const famConDatos = familiares.filter((f) => {
+    return (
+      (f.nombre || "").trim() ||
+      (f.edad || "").trim() ||
+      (f.run || "").trim() ||
+      (f.fechaNac || "").trim() ||
+      (f.estadoCivil || "").trim() ||
+      (f.domicilio || "").trim() ||
+      (f.penales || "").trim() ||
+      (f.causasPendientes || "").trim() ||
+      (f.reincidencia || "").trim() ||
+      (f.vehiculos || "").trim() ||
+      (f.foto || "").trim()
+    );
   });
 
-  if (familiaresConDatos.length > 0) {
-    const famTitle = createElement("div", "export-section-title", "Grupo familiar");
-    exportArea.appendChild(famTitle);
+  if (famConDatos.length > 0) {
+    const secFam = createEl("div", "export-section");
+    const secFamTitle = createEl("div", "export-section-title", "GRUPO FAMILIAR");
+    secFam.appendChild(secFamTitle);
 
-    familiaresConDatos.forEach((f) => {
-      // Título del bloque: relación
-      const rel = f.relacion || "(SIN RELACIÓN)";
-      const relDiv = createElement("div", "", rel);
-      relDiv.style.fontWeight = "bold";
-      relDiv.style.marginTop = "4px";
-      exportArea.appendChild(relDiv);
+    famConDatos.forEach((f) => {
+      const block = createEl("div", "export-fam-block");
 
-      const tablaFam = createElement("table", "export-table");
-      const tbodyFam = document.createElement("tbody");
-
-      // Foto familiar
-      const tieneFoto = f.foto && f.foto.trim() !== "";
-
-      // Helper por filas
-      function addFamRow(bloque) {
-        const anyVal = bloque.some((item) => !!item.value);
-        if (!anyVal) return;
-        const tr = document.createElement("tr");
-        bloque.forEach((item) => {
-          const td = document.createElement("td");
-          if (item.value) {
-            td.innerHTML = `<span class="export-label">${item.label}:</span> ${item.value}`;
-          }
-          tr.appendChild(td);
-        });
-        // Si hay foto y aún no se ha agregado, la ponemos en la primera fila que tenga datos
-        if (tieneFoto && !tbodyFam.hasPhoto) {
-          const tdPhoto = document.createElement("td");
-          tdPhoto.rowSpan = 4;
-          const img = document.createElement("img");
-          img.src = f.foto;
-          img.className = "export-photo";
-          img.style.width = "3cm";
-          img.style.height = "4cm";
-          tdPhoto.appendChild(img);
-          tr.appendChild(tdPhoto);
-          tbodyFam.hasPhoto = true;
-        }
-        tbodyFam.appendChild(tr);
+      const text = createEl("div", "export-fam-text");
+      const rel = (f.relacion || "").toUpperCase();
+      if (rel) {
+        text.appendChild(createEl("div", "export-label-line", rel));
+      }
+      if (f.nombre) {
+        text.appendChild(
+          createEl("div", "export-value-line", f.nombre.toUpperCase())
+        );
       }
 
-      addFamRow([
-        { label: "Edad", value: f.edad },
-        { label: "RUN", value: f.run },
-        { label: "Fecha de nacimiento", value: f.fechaNac },
-      ]);
+      addLabelValue(text, "Edad", f.edad);
+      addLabelValue(text, "RUN", f.run);
+      addLabelValue(text, "Fecha de nacimiento", f.fechaNac);
+      addLabelValue(text, "Estado civil", f.estadoCivil);
+      addLabelValue(text, "Domicilio", f.domicilio);
+      addLabelValue(text, "Penales", f.penales);
+      addLabelValue(text, "Causas pendientes", f.causasPendientes);
+      addLabelValue(text, "Reincidencia", f.reincidencia);
+      addLabelValue(text, "Vehículos", f.vehiculos);
 
-      addFamRow([
-        { label: "Estado civil", value: f.estadoCivil },
-        { label: "Domicilio", value: f.domicilio },
-        { label: "Penales", value: f.penales },
-      ]);
+      block.appendChild(text);
 
-      addFamRow([
-        { label: "Causas pendientes", value: f.causasPendientes },
-        { label: "Reincidencia", value: f.reincidencia },
-        { label: "Vehículos", value: f.vehiculos },
-      ]);
-
-      if (tbodyFam.children.length > 0) {
-        tablaFam.appendChild(tbodyFam);
-        exportArea.appendChild(tablaFam);
+      if ((f.foto || "").trim()) {
+        const img = createEl("img", "export-fam-photo");
+        img.src = f.foto;
+        img.style.width = "3cm";
+        img.style.height = "4cm";
+        block.appendChild(img);
       }
+
+      secFam.appendChild(block);
     });
+
+    area.appendChild(secFam);
   }
 
-  // Pie de página estilo OS9
-  const footer = createElement("div", "export-footer");
-  const left = createElement("span", "", "Departamento Investigación de Organizaciones Criminales O.S.9");
-  const right = createElement("span", "", "Página 1 de 1");
-  footer.appendChild(left);
-  footer.appendChild(right);
-  exportArea.appendChild(footer);
+  // Footer
+  const footer = createEl("div", "export-footer");
+  footer.appendChild(
+    createEl(
+      "span",
+      "",
+      "Departamento Investigación de Organizaciones Criminales O.S.9"
+    )
+  );
+  footer.appendChild(createEl("span", "", "Página 1 de 1"));
+  area.appendChild(footer);
 }
 
-// ========================
-// Exportar a PDF (oficio)
-// ========================
-
+// =====================
+// Exportar a PDF (legal = oficio)
+// =====================
 async function exportToPDF() {
   buildExportDOM();
   const exportArea = document.getElementById("exportArea");
@@ -517,29 +386,27 @@ async function exportToPDF() {
   const pdf = new jsPDF("p", "mm", "legal");
 
   const pageWidth = pdf.internal.pageSize.getWidth();
-  const pageHeight = pdf.internal.pageSize.getHeight();
-
   const imgWidth = pageWidth;
   const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-  const y = 0;
-  pdf.addImage(imgData, "PNG", 0, y, imgWidth, imgHeight);
+  pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
 
   const fecha = getValue("fecha") || "";
-  const alias = getValue("alias") || "sin_alias";
-  const filename = `Ficha_Policial_OS9_${alias}_${fecha}.pdf`.replace(/\s+/g, "_");
+  const nombre = getValue("nombreCompleto") || "sin_nombre";
+  const filename = `Ficha_Policial_OS9_${nombre}_${fecha}.pdf`.replace(
+    /\s+/g,
+    "_"
+  );
   pdf.save(filename);
 }
 
-// ========================
+// =====================
 // Exportar a Word (.doc)
-// ========================
-
+// =====================
 function exportToWord() {
   buildExportDOM();
   const exportArea = document.getElementById("exportArea");
 
-  // HTML básico para Word
   const htmlContent = `
   <html>
     <head>
@@ -547,14 +414,18 @@ function exportToWord() {
       <title>Ficha Policial OS9</title>
       <style>
         body { font-family: Arial, Helvetica, sans-serif; font-size: 11px; }
-        .export-page-title { text-align: center; font-size: 14px; font-weight: bold; text-transform: uppercase; }
+        .export-title { text-align: center; font-weight: bold; font-size: 14px; text-transform: uppercase; }
         .export-subtitle { text-align: center; font-size: 10px; margin-bottom: 8px; }
-        .export-section-title { font-size: 11px; font-weight: bold; text-transform: uppercase; margin-top: 8px; margin-bottom: 4px; border-bottom: 1px solid #000; }
-        .export-table { width: 100%; border-collapse: collapse; margin-bottom: 4px; }
-        .export-table td { vertical-align: top; padding: 2px 3px; }
-        .export-label { font-weight: bold; }
-        .export-photo { border: 1px solid #000; object-fit: cover; }
-        .export-footer { margin-top: 8px; font-size: 9px; display: flex; justify-content: space-between; }
+        .export-section { margin-top: 8px; }
+        .export-section-title { font-weight: bold; text-transform: uppercase; margin-bottom: 2px; border-bottom: 1px solid #000; }
+        .export-label-line { font-weight: bold; margin-top: 4px; }
+        .export-value-line { margin-left: 10px; }
+        .export-name-main { margin-top: 4px; margin-bottom: 4px; font-weight: bold; }
+        .export-photo-main { display: block; margin: 6px auto 4px; border: 1px solid #000; object-fit: cover; }
+        .export-fam-block { margin-top: 6px; display: flex; align-items: flex-start; gap: 10px; }
+        .export-fam-text { flex: 1; }
+        .export-fam-photo { width: 3cm; height: 4cm; border: 1px solid #000; object-fit: cover; }
+        .export-footer { margin-top: 10px; font-size: 9px; display: flex; justify-content: space-between; }
       </style>
     </head>
     <body>
@@ -567,8 +438,11 @@ function exportToWord() {
   });
 
   const fecha = getValue("fecha") || "";
-  const alias = getValue("alias") || "sin_alias";
-  const filename = `Ficha_Policial_OS9_${alias}_${fecha}.doc`.replace(/\s+/g, "_");
+  const nombre = getValue("nombreCompleto") || "sin_nombre";
+  const filename = `Ficha_Policial_OS9_${nombre}_${fecha}.doc`.replace(
+    /\s+/g,
+    "_"
+  );
 
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -580,46 +454,44 @@ function exportToWord() {
   URL.revokeObjectURL(url);
 }
 
-// ========================
-// Inicialización
-// ========================
-
+// =====================
+// Init
+// =====================
 document.addEventListener("DOMContentLoaded", () => {
-  // Habilitar pegar fotos en los recuadros iniciales
   initPhotoPasteHandlers();
 
-  // Botón agregar familiar
-  const btnAgregar = document.getElementById("btnAgregarFamiliar");
-  btnAgregar.addEventListener("click", () => {
-    const relacion = getValue("relacionNuevo");
-    // Si ni relación ni ningún dato, no hacemos nada
-    const datosTemporales = collectTemporalFamiliarData();
-    const algunDato =
-      relacion ||
-      datosTemporales.edad ||
-      datosTemporales.run ||
-      datosTemporales.fechaNac ||
-      datosTemporales.estadoCivil ||
-      datosTemporales.domicilio ||
-      datosTemporales.penales ||
-      datosTemporales.causasPendientes ||
-      datosTemporales.reincidencia ||
-      datosTemporales.vehiculos ||
-      datosTemporales.foto;
+  document
+    .getElementById("btnAgregarFamiliar")
+    .addEventListener("click", () => {
+      const temporal = collectTemporalFamiliarData();
+      const hayDato =
+        temporal.relacion ||
+        temporal.nombre ||
+        temporal.edad ||
+        temporal.run ||
+        temporal.fechaNac ||
+        temporal.estadoCivil ||
+        temporal.domicilio ||
+        temporal.penales ||
+        temporal.causasPendientes ||
+        temporal.reincidencia ||
+        temporal.vehiculos ||
+        temporal.foto;
 
-    if (!algunDato) {
-      alert("Ingresa al menos la relación o algún dato del familiar antes de agregar.");
-      return;
-    }
+      if (!hayDato) {
+        alert("Ingresa al menos la relación, nombre u otro dato del familiar.");
+        return;
+      }
 
-    datosTemporales.relacion = relacion;
-    addFamiliarCard(datosTemporales);
-    clearTemporalFamiliarForm();
-  });
+      addFamiliarCard(temporal);
+      clearTemporalFamiliarForm();
+    });
 
-  // Botón exportar PDF
-  document.getElementById("btnExportPdf").addEventListener("click", exportToPDF);
+  document
+    .getElementById("btnExportPdf")
+    .addEventListener("click", exportToPDF);
 
-  // Botón exportar Word
-  document.getElementById("btnExportWord").addEventListener("click", exportToWord);
+  document
+    .getElementById("btnExportWord")
+    .addEventListener("click", exportToWord);
 });
