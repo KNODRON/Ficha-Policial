@@ -1,0 +1,314 @@
+/* Estilo general */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f0f2f5;
+  color: #222;
+}
+
+.app-container {
+  max-width: 1100px; /* cercano a ancho oficio en pantalla */
+  margin: 20px auto 40px;
+  padding: 0 16px 40px;
+}
+
+/* Cabecera */
+.app-header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 24px;
+  letter-spacing: 1px;
+  color: #004b33; /* verde institucional tipo Carabineros */
+  text-transform: uppercase;
+}
+
+.app-header .subtitle {
+  font-size: 12px;
+  color: #555;
+}
+
+/* Tarjetas / secciones */
+.section-card {
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #d0d4d9;
+  padding: 16px 18px 18px;
+  margin-bottom: 14px;
+}
+
+.section-card h2 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  color: #004b33;
+  text-transform: uppercase;
+}
+
+.section-header-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.section-helper {
+  font-size: 11px;
+  color: #666;
+}
+
+/* Campos */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.form-group label {
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.form-group input,
+.form-group select {
+  padding: 4px 6px;
+  font-size: 12px;
+  border-radius: 3px;
+  border: 1px solid #bfc4cc;
+}
+
+/* Grillas */
+.grid-2,
+.grid-3 {
+  display: grid;
+  grid-gap: 10px 12px;
+  margin-bottom: 4px;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Fotos */
+.photo-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 6cm;
+}
+
+.photo-label {
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+
+.photo-box {
+  position: relative;
+  border: 1px solid #999;
+  background: #fafafa;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: text;
+}
+
+/* Foto principal: 8cm alto x 6cm ancho aprox */
+.main-photo {
+  width: 6cm;
+  height: 8cm;
+}
+
+/* Foto familiar: 4cm alto x 3cm ancho aprox */
+.familiar-photo {
+  width: 3cm;
+  height: 4cm;
+}
+
+.photo-hint {
+  font-size: 10px;
+  color: #777;
+  padding: 4px;
+}
+
+.photo-hint.small {
+  font-size: 9px;
+}
+
+/* Cuando hay imagen, ocultamos el texto de ayuda */
+.photo-box.has-image .photo-hint {
+  display: none;
+}
+
+/* Botones */
+.btn {
+  border-radius: 3px;
+  padding: 6px 12px;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn.primary {
+  background: #004b33;
+  color: #fff;
+}
+
+.btn.primary:hover {
+  background: #006644;
+}
+
+.btn.secondary {
+  background: #e6eaef;
+  color: #222;
+}
+
+.btn.secondary:hover {
+  background: #d3d8de;
+}
+
+.actions-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.actions-card h2 {
+  margin-bottom: 8px;
+}
+
+.hint {
+  font-size: 11px;
+  margin-top: 8px;
+  color: #666;
+}
+
+/* Familiares */
+.familiar-creator {
+  border: 1px dashed #c5cbd3;
+  padding: 10px 12px;
+  border-radius: 4px;
+  margin-bottom: 14px;
+}
+
+.familiares-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.familiar-card {
+  border: 1px solid #d0d4d9;
+  border-radius: 4px;
+  padding: 8px 10px;
+}
+
+.familiar-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.familiar-card-header span {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.familiar-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 8px 10px;
+}
+
+.familiar-bottom-row {
+  display: grid;
+  grid-template-columns: 1.5fr auto;
+  grid-gap: 10px;
+  margin-top: 6px;
+}
+
+.btn-small {
+  padding: 3px 8px;
+  font-size: 11px;
+}
+
+/* Export area (oculta en pantalla) */
+.export-area {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  width: 21.6cm; /* ancho oficio aprox */
+  padding: 1.5cm 1.5cm;
+  background: #fff;
+  color: #000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+}
+
+/* Dentro del export, imitamos ficha */
+.export-page-title {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.export-subtitle {
+  text-align: center;
+  font-size: 10px;
+  margin-bottom: 8px;
+}
+
+.export-section-title {
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #000;
+}
+
+.export-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 4px;
+}
+
+.export-table td {
+  vertical-align: top;
+  padding: 2px 3px;
+}
+
+.export-label {
+  font-weight: bold;
+}
+
+.export-photo {
+  border: 1px solid #000;
+  display: block;
+  object-fit: cover;
+}
+
+/* Pie de página estilo OS9 */
+.export-footer {
+  margin-top: 8px;
+  font-size: 9px;
+  display: flex;
+  justify-content: space-between;
+}
