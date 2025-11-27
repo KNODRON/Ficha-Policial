@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Ficha Policial OS9</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Librerías para PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1>FICHA POLICIAL OS9</h1>
+      <span class="subtitle">Departamento Investigación de Organizaciones Criminales O.S.9</span>
+    </header>
+
+    <!-- =========================
+         BLOQUE: IDENTIFICACIÓN DEL CASO
+         ========================== -->
+    <section class="section-card">
+      <h2>Identificación del caso</h2>
+      <div class="grid-3">
+        <div class="form-group">
+          <label for="fecha">Fecha</label>
+          <input type="date" id="fecha">
+        </div>
+        <div class="form-group">
+          <label for="caso">Caso / Causa</label>
+          <input type="text" id="caso" placeholder="INCENDIO CON PELIGRO PARA LAS PERSONAS">
+        </div>
+        <div class="form-group">
+          <label for="ruc">Folio o RUC</label>
+          <input type="text" id="ruc" placeholder="2500872101-K">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="personalRequiere">Personal que requiere</label>
+          <input type="text" id="personalRequiere" placeholder="TTE. POULETTE REYES BARRA">
+        </div>
+        <div class="form-group">
+          <label for="confecciona">Confecciona</label>
+          <input type="text" id="confecciona" placeholder="S2JEJV">
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+         BLOQUE: IDENTIDAD
+         ========================== -->
+    <section class="section-card">
+      <div class="section-header-row">
+        <h2>Identidad</h2>
+        <div class="photo-wrapper">
+          <span class="photo-label">Fotografía identificado</span>
+          <!-- Foto 8cm x 6cm (alto x ancho) aprox -->
+          <div class="photo-box main-photo" data-role="main-photo" contenteditable="true">
+            <span class="photo-hint">Clic aquí y pegar recorte (Ctrl+V)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="form-group">
+          <label for="alias">Alias</label>
+          <input type="text" id="alias" placeholder="SE DESCONOCE">
+        </div>
+        <div class="form-group">
+          <label for="nacionalidad">Nacionalidad</label>
+          <input type="text" id="nacionalidad">
+        </div>
+        <div class="form-group">
+          <label for="edad">Edad</label>
+          <input type="number" id="edad" min="0">
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="form-group">
+          <label for="run">RUN</label>
+          <input type="text" id="run">
+        </div>
+        <div class="form-group">
+          <label for="fechaNac">Fecha de nacimiento</label>
+          <input type="date" id="fechaNac">
+        </div>
+        <div class="form-group">
+          <label for="estadoCivil">Estado civil</label>
+          <input type="text" id="estadoCivil">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="domicilio">Domicilio</label>
+          <input type="text" id="domicilio">
+        </div>
+        <div class="form-group">
+          <label for="domicilioBud">Domicilio BUD</label>
+          <input type="text" id="domicilioBud">
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="form-group">
+          <label for="profesion">Profesión</label>
+          <input type="text" id="profesion">
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="text" id="telefono">
+        </div>
+        <div class="form-group">
+          <label for="licencia">Licencia</label>
+          <input type="text" id="licencia">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="penales">Penales</label>
+          <input type="text" id="penales">
+        </div>
+        <div class="form-group">
+          <label for="causasPendientes">Causas pendientes</label>
+          <input type="text" id="causasPendientes">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="reincidencia">Reincidencia</label>
+          <input type="text" id="reincidencia">
+        </div>
+        <div class="form-group">
+          <label for="companerosDelito">Compañeros de delito</label>
+          <input type="text" id="companerosDelito">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="vehiculos">Vehículos</label>
+        <input type="text" id="vehiculos">
+      </div>
+    </section>
+
+    <!-- =========================
+         BLOQUE: GRUPO FAMILIAR
+         ========================== -->
+    <section class="section-card">
+      <div class="section-header-row">
+        <h2>Grupo familiar</h2>
+        <span class="section-helper">
+          Agrega PADRE, MADRE, HIJOS, HERMANOS, etc. Solo se exportan los que tengan datos.
+        </span>
+      </div>
+
+      <!-- Formulario base para crear un nuevo familiar -->
+      <div class="familiar-creator">
+        <div class="grid-3">
+          <div class="form-group">
+            <label for="relacionNuevo">Relación</label>
+            <select id="relacionNuevo">
+              <option value="">Seleccione...</option>
+              <option>PADRE</option>
+              <option>MADRE</option>
+              <option>PADRASTRO</option>
+              <option>MADRASTRA</option>
+              <option>CÓNYUGE</option>
+              <option>CONVIVIENTE</option>
+              <option>HERMANO</option>
+              <option>HERMANA</option>
+              <option>HERMANASTRO</option>
+              <option>HERMANASTRA</option>
+              <option>HIJO</option>
+              <option>HIJA</option>
+              <option>HIJASTRO</option>
+              <option>HIJASTRA</option>
+              <option>TÍO</option>
+              <option>TÍA</option>
+              <option>OTRO</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edadNuevo">Edad</label>
+            <input type="number" id="edadNuevo" min="0">
+          </div>
+          <div class="form-group">
+            <label for="runNuevo">RUN</label>
+            <input type="text" id="runNuevo">
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="form-group">
+            <label for="fechaNacNuevo">Fecha de nacimiento</label>
+            <input type="date" id="fechaNacNuevo">
+          </div>
+          <div class="form-group">
+            <label for="estadoCivilNuevo">Estado civil</label>
+            <input type="text" id="estadoCivilNuevo">
+          </div>
+          <div class="form-group">
+            <label for="domicilioNuevo">Domicilio</label>
+            <input type="text" id="domicilioNuevo">
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="form-group">
+            <label for="penalesNuevo">Penales</label>
+            <input type="text" id="penalesNuevo">
+          </div>
+          <div class="form-group">
+            <label for="causasPendientesNuevo">Causas pendientes</label>
+            <input type="text" id="causasPendientesNuevo">
+          </div>
+          <div class="form-group">
+            <label for="reincidenciaNuevo">Reincidencia</label>
+            <input type="text" id="reincidenciaNuevo">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="vehiculosNuevo">Vehículos</label>
+            <input type="text" id="vehiculosNuevo">
+          </div>
+          <div class="form-group familiar-photo-group">
+            <span class="label-inline">Fotografía familiar</span>
+            <!-- Foto 4cm x 3cm -->
+            <div class="photo-box familiar-photo" data-role="familiar-photo" contenteditable="true">
+              <span class="photo-hint small">Pegar recorte aquí (Ctrl+V)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions-row">
+          <button type="button" id="btnAgregarFamiliar" class="btn primary">
+            + Agregar familiar
+          </button>
+        </div>
+      </div>
+
+      <!-- Contenedor donde se van agregando los familiares -->
+      <div id="familiaresContainer" class="familiares-list">
+        <!-- Aquí se insertan las tarjetas de familiares -->
+      </div>
+    </section>
+
+    <!-- =========================
+         ACCIONES GENERALES
+         ========================== -->
+    <section class="section-card actions-card">
+      <h2>Exportar ficha</h2>
+      <div class="actions-row">
+        <button type="button" id="btnExportPdf" class="btn primary">Exportar a PDF (oficio)</button>
+        <button type="button" id="btnExportWord" class="btn secondary">Exportar a Word (.doc)</button>
+      </div>
+      <p class="hint">
+        Los bloques o campos que queden completamente en blanco no aparecerán en la exportación.
+      </p>
+    </section>
+  </div>
+
+  <!-- Área oculta donde se construye la ficha para exportar -->
+  <div id="exportArea" class="export-area" aria-hidden="true"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
